@@ -33,6 +33,16 @@ If you're building on Apple Silicon and use the Rosetta terminal (see below), yo
 cmake .. -DCMAKE_BUILD_TYPE=Release -DCMAKE_OSX_ARCHITECTURES="x86_64"
 ```
 
+### Building dependencies with `vcpkg`
+
+Optionally, make sure to only build dependencies in `Release` mode by e.g.:
+
+```
+echo "set(VCPKG_BUILD_TYPE release)" >> $VCPKG_ROOT/triplets/vcpkg.cmake
+```
+
+Once you add `-DCMAKE_TOOLCHAIN_FILE=$VCPKG_ROOT/scripts/buildsystems/vcpkg.cmake` to the CMake configuration command
+
 ### Building from Source - Linux
 
 To install on a Debian or Ubuntu system you need to install its dependencies with:
