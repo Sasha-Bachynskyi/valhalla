@@ -35,13 +35,13 @@ cmake .. -DCMAKE_BUILD_TYPE=Release -DCMAKE_OSX_ARCHITECTURES="x86_64"
 
 ### Building dependencies with `vcpkg`
 
+Once you add `-DCMAKE_TOOLCHAIN_FILE=$VCPKG_ROOT/scripts/buildsystems/vcpkg.cmake` to the CMake configuration command, CMake will use `vcpkg` to build and install the dependencies.
+
 Optionally, make sure to only build dependencies in `Release` mode by e.g.:
 
 ```
 echo "set(VCPKG_BUILD_TYPE release)" >> $VCPKG_ROOT/triplets/vcpkg.cmake
 ```
-
-Once you add `-DCMAKE_TOOLCHAIN_FILE=$VCPKG_ROOT/scripts/buildsystems/vcpkg.cmake` to the CMake configuration command
 
 ### Building from Source - Linux
 
