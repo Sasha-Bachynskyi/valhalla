@@ -225,13 +225,14 @@ TEST_P(FerryTest, ReclassifyFerryConnectionPerMode) {
   }
 }
 
-TEST(Standalone, ReclassifyFerryUntagDestOnly) {
+TEST(Standalone, ReclassifyFerryUntagDestOnlyAndSingleRoad) {
   // access=customers should be untagged if it's present on connecting edge(s)
   // see https://github.com/valhalla/valhalla/issues/3941#issuecomment-1407713742
   // CD is destonly -> should untag BC, CD and take the faster path
   // EF is not destonly -> shouldn't untag FG and take the detour
 
   // the X is bcs of https://github.com/valhalla/valhalla/issues/4164
+  // also test that only on way between two nodes is upclassed (BC, not BIJC)
   const std::string ascii_map = R"(
     A--B--C--D------E--F-X-G--H--M
        |  |            |   |
@@ -278,6 +279,10 @@ TEST(Standalone, ReclassifyFerryUntagDestOnly) {
   auto tagged = gurka::findEdge(reader, layout, "BC", "C");
   EXPECT_FALSE(std::get<1>(tagged)->destonly()) << "Edge BC shouldn't be destonly";
   EXPECT_TRUE(std::get<1>(tagged)->classification() == valhalla::baldr::RoadClass::kPrimary);
+
+  auto no_reclassing = gurka::findEdge(reader, layout, "BCIJ", "C");
+  EXPECT_TRUE(std::get<1>(tagged)->classification() == valhalla::baldr::RoadClass::kResidential)
+      << "Edge BCIJ shouldn't be reclassified";
 
   // see if FX & XG are still tagged and low class
   const std::vector<std::pair<std::string, std::string>>& edges = {{"FX", "X"}, {"XG", "G"}};
