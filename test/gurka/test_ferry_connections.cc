@@ -280,8 +280,9 @@ TEST(Standalone, ReclassifyFerryUntagDestOnlyAndSingleRoad) {
   EXPECT_FALSE(std::get<1>(tagged)->destonly()) << "Edge BC shouldn't be destonly";
   EXPECT_TRUE(std::get<1>(tagged)->classification() == valhalla::baldr::RoadClass::kPrimary);
 
-  auto no_reclassing = gurka::findEdge(reader, layout, "BCIJ", "C");
-  EXPECT_TRUE(std::get<1>(tagged)->classification() == valhalla::baldr::RoadClass::kResidential)
+  auto no_reclassing = gurka::findEdge(reader, layout, "BIJC", "C");
+  EXPECT_TRUE(std::get<1>(no_reclassing)->classification() ==
+              valhalla::baldr::RoadClass::kResidential)
       << "Edge BCIJ shouldn't be reclassified";
 
   // see if FX & XG are still tagged and low class
