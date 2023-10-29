@@ -160,11 +160,10 @@ uint32_t day_of_week_mask(const std::string& date_time);
  * Add x seconds to a date_time and return a ISO date_time string.
  * @param   date_time   in the format of 01:34:15 or 2015-05-06T08:00
  * @param   seconds     seconds to add to the date.
- * @param   tz          timezone
+ * @param   tz_idx      timezone index
  * @return  Returns ISO formatted string
  */
-std::string
-get_duration(const std::string& date_time, const uint32_t seconds, const date::time_zone* tz);
+std::string get_duration(const std::string& date_time, const uint32_t seconds, const uint32_t tz_idx);
 
 /**
  * Checks if a date is restricted within a begin and end range.

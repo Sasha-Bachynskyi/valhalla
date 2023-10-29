@@ -531,6 +531,7 @@ void thor_worker_t::path_depart_at(Api& api, const std::string& costing) {
   const Options& options = api.options();
   valhalla::Trip& trip = *api.mutable_trip();
   trip.mutable_routes()->Reserve(options.alternates() + 1);
+  graph_tile_ptr tile;
 
   auto route_two_locations = [&, this](auto& origin, auto& destination) -> bool {
     // Get the algorithm type for this location pair
@@ -555,9 +556,12 @@ void thor_worker_t::path_depart_at(Api& api, const std::string& costing) {
       // forward propagate time information
       if (!origin->date_time().empty() && options.date_time_type() != valhalla::Options::invariant) {
         auto destination_dt =
-            offset_date(*reader, origin->date_time(), temp_path.front().edgeid,
-                        temp_path.back().elapsed_cost.secs + destination->waiting_secs(),
-                        temp_path.back().edgeid);
+            DateTime::get_duration(temp_path.back().destination_localtime,
+                                   temp_path.back().elapsed_cost.secs + destination->waiting_secs(),
+                                   reader->GetTimezoneFromEdge(temp_path.back().edgeid, tile));
+        offset_date(*reader, origin->date_time(), temp_path.front().edgeid,
+                    temp_path.back().elapsed_cost.secs + destination->waiting_secs(),
+                    temp_path.back().edgeid);
         destination->set_date_time(destination_dt);
       }
 

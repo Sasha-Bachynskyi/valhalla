@@ -132,7 +132,7 @@ void recost_forward(baldr::GraphReader& reader,
                       transition_cost, time_restrictions_TODO, !ignore_access,
                       static_cast<bool>(flow_sources & baldr::kDefaultFlowMask), turn);
     // hand back the label
-    label_cb(label);
+    label_cb(label, offset_time.date_time());
     // next edge
     edge_id = next_id;
   }

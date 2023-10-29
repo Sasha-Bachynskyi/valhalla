@@ -576,9 +576,6 @@ void TimeDistanceMatrix::FormTimeDistanceMatrix(Api& request,
 
     // this logic doesn't work with string repeated fields, gotta collect them
     // and process them later
-    auto date_time =
-        get_date_time(origin_dt, origin_tz, pred_id, reader, static_cast<uint64_t>(time));
-    out_date_times[pbf_idx] = date_time;
   }
 }
 

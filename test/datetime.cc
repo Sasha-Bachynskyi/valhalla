@@ -105,7 +105,7 @@ void TryGetDuration(const std::string& date_time,
                     uint32_t seconds,
                     const std::string& expected_date_time) {
 
-  auto tz = DateTime::get_tz_db().from_index(DateTime::get_tz_db().to_index("America/New_York"));
+  auto tz = DateTime::get_tz_db().to_index("America/New_York");
 
   EXPECT_EQ(DateTime::get_duration(date_time, seconds, tz), expected_date_time)
       << std::string("Incorrect duration ") + DateTime::get_duration(date_time, seconds, tz) +

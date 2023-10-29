@@ -289,12 +289,7 @@ private:
           std::string dt = DateTime::get_duration(time_info.date_time(),
                                                   round_up_mins(transit_departure->departure_time() -
                                                                 time_info.day_seconds()),
-                                                  DateTime::get_tz_db().from_index(node->timezone()));
-
-          std::size_t found = dt.find_last_of(' '); // remove tz abbrev.
-          if (found != std::string::npos) {
-            dt = dt.substr(0, found);
-          }
+                                                  node->timezone());
 
           // Set departure time from this transit stop if requested
           if (controller(kNodeTransitPlatformInfoDepartureDateTime)) {
@@ -308,14 +303,7 @@ private:
                                                 round_up_mins((transit_departure->departure_time() +
                                                                transit_departure->elapsed_time()) -
                                                               time_info.day_seconds()),
-                                                DateTime::get_tz_db().from_index(node->timezone()));
-
-          found = arrival_time.find_last_of(' '); // remove tz abbrev.
-          if (found != std::string::npos) {
-            arrival_time = arrival_time.substr(0, found);
-          }
-
-          // TODO:  set removed tz abbrev on transit_platform_info for arrival.
+                                                node->timezone());
 
           // Get the block Id
           block_id = transit_departure->blockid();

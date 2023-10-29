@@ -237,7 +237,12 @@ uint32_t day_of_week_mask(const std::string& date_time) {
 // add x seconds to a date_time and return a ISO date_time string.
 // date_time is in the format of 2015-05-06T08:00
 std::string
-get_duration(const std::string& date_time, const uint32_t seconds, const date::time_zone* time_zone) {
+get_duration(const std::string& date_time, const uint32_t seconds, const uint32_t tz_idx) {
+  // TODO: make "seconds" optional, then we could put in the timeinfo's date_time from
+  //    the algos. only problem is that the routing doesn't have access to the timeinfo objects
+
+  // TODO: one way could be to attach one more field to PathInfo
+  auto* time_zone = get_tz_db().from_index(tz_idx);
 
   date::local_seconds date;
   date = get_formatted_date(date_time);
@@ -249,7 +254,7 @@ get_duration(const std::string& date_time, const uint32_t seconds, const date::t
   std::ostringstream iso_date_time;
 
   const auto origin = date::make_zoned(time_zone, tp);
-  iso_date_time << date::format("%FT%R%z %Z", origin);
+  iso_date_time << date::format("%FT%R%z", origin);
   std::string iso_date = iso_date_time.str();
   iso_date.insert(19, 1, ':');
   return iso_date;

@@ -925,7 +925,16 @@ public:
    * @param tile   Current tile.
    * @return Returns the timezone index. A value of 0 indicates an invalid timezone.
    */
-  int GetTimezone(const baldr::GraphId& node, graph_tile_ptr& tile);
+  uint32_t GetTimezone(const baldr::GraphId& node, graph_tile_ptr& tile);
+
+  /**
+   * Convenience method to get the timezone index from an edge. Preferably it returns
+   * the start's node's timezone.
+   * @param edge   GraphId of the edge to get the timezone index.
+   * @param tile   Current tile.
+   * @return Returns the timezone index. A value of 0 indicates an invalid timezone.
+   */
+  uint32_t GetTimezoneFromEdge(const baldr::GraphId& edge, graph_tile_ptr& tile);
 
   /**
    * Returns an incident tile for the given tile id

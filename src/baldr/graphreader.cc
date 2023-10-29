@@ -970,9 +970,19 @@ AABB2<PointLL> GraphReader::GetMinimumBoundingBox(const AABB2<PointLL>& bb) {
   return min_bb;
 }
 
-int GraphReader::GetTimezone(const baldr::GraphId& node, graph_tile_ptr& tile) {
+uint32_t GraphReader::GetTimezone(const baldr::GraphId& node, graph_tile_ptr& tile) {
   GetGraphTile(node, tile);
   return (tile == nullptr) ? 0 : tile->node(node)->timezone();
+}
+
+uint32_t GraphReader::GetTimezoneFromEdge(const baldr::GraphId& edge, graph_tile_ptr& tile) {
+  auto nodes = GetDirectedEdgeNodes(edge, tile);
+  if (const auto* node = nodeinfo(nodes.first, tile))
+    return node->timezone();
+  else if (const auto* node = nodeinfo(nodes.second, tile))
+    return node->timezone();
+
+  return 0;
 }
 
 std::shared_ptr<const valhalla::IncidentsTile>
